@@ -583,17 +583,6 @@ a.tile:hover .tile__arrow { transform: translateX(4px); }
 .contact-link svg { width: 20px; height: 20px; flex: none; color: var(--orange); }
 @media (max-width: 900px) { .contact-grid { grid-template-columns: 1fr; } }
 
-.map {
-  margin-top: 16px;
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  overflow: hidden;
-  aspect-ratio: 21 / 8;
-  background: var(--surface);
-}
-.map iframe { width: 100%; height: 100%; border: 0; filter: grayscale(1) invert(.92) contrast(.9); }
-@media (max-width: 700px) { .map { aspect-ratio: 4 / 3; } }
-
 /* ---------- CTA band ---------- */
 .cta-band {
   background: var(--orange);

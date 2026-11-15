@@ -22,6 +22,63 @@
     el.textContent = new Date().getFullYear();
   });
 
+  // Płynne otwieranie/zamykanie akordeonów (etapy budowy i wykończenia).
+  // <details> działa też bez JS; skrypt dodaje tylko animację wysokości i treści.
+  var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (!reduceMotion && typeof Element.prototype.animate === "function") {
+    document.querySelectorAll("details.step").forEach(function (el) {
+      var summary = el.querySelector("summary");
+      var body = el.querySelector(".step__body");
+      if (!summary || !body) return;
+      var anim = null;   // bieżąca animacja wysokości
+      var timer = null;
+
+      function stopAll() {
+        clearTimeout(timer);
+        if (anim) anim.cancel();
+        body.getAnimations().forEach(function (a) { a.cancel(); });
+      }
+
+      // Koniec animacji ustawiamy zegarem (nie zdarzeniem onfinish), żeby akordeon
+      // nigdy nie utknął w połowie, np. gdy karta przeglądarki jest w tle.
+      function done(isOpen, ms) {
+        timer = setTimeout(function () {
+          stopAll();
+          anim = null;
+          el.open = isOpen;
+          el.style.overflow = "";
+        }, ms);
+      }
+
+      summary.addEventListener("click", function (e) {
+        e.preventDefault();
+        // kliknięcie w trakcie animacji odwraca jej kierunek
+        var closing = anim ? anim.expanding : el.open;
+        var from = el.offsetHeight;
+        stopAll();
+        el.style.overflow = "hidden";
+        el.open = true;
+
+        if (closing) {
+          var to = el.offsetHeight - body.offsetHeight;
+          anim = el.animate({ height: [from + "px", to + "px"] }, { duration: 260, easing: "cubic-bezier(.4, 0, .2, 1)", fill: "forwards" });
+          body.animate({ opacity: [1, 0] }, { duration: 180, easing: "ease-out", fill: "forwards" });
+          anim.expanding = false;
+          done(false, 260);
+        } else {
+          var target = el.offsetHeight;
+          anim = el.animate({ height: [from + "px", target + "px"] }, { duration: 320, easing: "cubic-bezier(.2, .7, .2, 1)", fill: "forwards" });
+          body.animate(
+            { opacity: [0, 1], transform: ["translateY(-6px)", "none"] },
+            { duration: 300, delay: 40, easing: "ease-out", fill: "both" }
+          );
+          anim.expanding = true;
+          done(true, 340);
+        }
+      });
+    });
+  }
+
   // Lightbox dla galerii
   var box = document.querySelector(".lightbox");
   if (!box || typeof box.showModal !== "function") return;

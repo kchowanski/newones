@@ -13,6 +13,14 @@ Statyczna strona (HTML + CSS + odrobina JS), bez części serwerowej. Hosting: G
 Wrzuć zdjęcie do `assets/img/` (najlepiej `.webp` lub `.jpg`, szerokość ok. 1600–2000 px, do ~300 KB)
 i zamień `src="assets/img/placeholder.svg"` na ścieżkę do pliku. Miejsca oznaczone są komentarzami `PODMIEŃ`.
 
+## Fonty
+Bebas Neue i Montserrat (licencja SIL OFL) są w `assets/fonts/` i ładują się z tej strony, a nie z serwerów
+Google (bez przekazywania adresów IP odwiedzających do Google). Deklaracje `@font-face` są na początku `style.css`.
+
+## Przejścia między stronami
+`@view-transition` na końcu `style.css`: nagłówek i pasek kontaktu zostają na miejscu, treść się przenika.
+Działa w Chrome/Edge/Safari 18.2+, w pozostałych przeglądarkach strona przeładowuje się zwyczajnie.
+
 ## Zmiany w CSS/JS
 Linki do `style.css` i `main.js` mają numer wersji (`?v=2`). Po zmianie tych plików podbij numer
 we wszystkich plikach `.html`, żeby przeglądarki odwiedzających pobrały nową wersję zamiast starej z pamięci.

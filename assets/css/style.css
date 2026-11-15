@@ -239,35 +239,27 @@ p { margin: 0 0 1em; }
 .hero h1 { margin-bottom: .4em; }
 .hero h1 .accent { display: block; }
 .hero__text .lead { margin-bottom: 2rem; }
-/* Ukośne cięcie zdjęcia z pomarańczową krawędzią (nawiązanie do dachu z logo).
-   Rysowane nakładką SVG, bo przeglądarki wygładzają krawędzie SVG (clip-path daje „ząbki”). */
+/* Ukośne cięcie zdjęcia z cienką pomarańczową linią (nawiązanie do dachu z logo).
+   Rysowane SVG osadzonym w HTML: renderuje się wektorowo w pełnej rozdzielczości ekranu,
+   a linia ma stałą grubość 2px dzięki vector-effect: non-scaling-stroke. */
 .hero__media { position: relative; overflow: hidden; }
 .hero__media img { width: 100%; height: 100%; object-fit: cover; }
-.hero__media::before {
-  content: "";
+.hero__cut {
   position: absolute;
   z-index: 1;
-  top: 0;
-  bottom: 0;
-  left: -1px;
-  width: 15%;
+  display: block;
   pointer-events: none;
-  background: no-repeat 0 0 / 100% 100% url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none' shape-rendering='geometricPrecision'%3E%3Cpolygon points='0,0 93,0 0,100' fill='%230d0d0d'/%3E%3Cpolygon points='93,0 100,0 7,100 0,100' fill='%23ef7117'/%3E%3C/svg%3E");
+  overflow: visible;
 }
+.hero__cut--side { top: 0; bottom: 0; left: -1px; width: 15%; height: 100%; }
+.hero__cut--bottom { display: none; }
 
 @media (max-width: 900px) {
   .hero { grid-template-columns: 1fr; min-height: 0; max-height: none; }
   .hero__media { order: -1; aspect-ratio: 16 / 10; }
   /* na telefonie skos idzie po dolnej krawędzi */
-  .hero__media::before {
-    top: auto;
-    bottom: -1px;
-    left: 0;
-    right: 0;
-    width: auto;
-    height: 14%;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none' shape-rendering='geometricPrecision'%3E%3Cpolygon points='0,100 100,30 100,100' fill='%230d0d0d'/%3E%3Cpolygon points='0,72 100,0 100,30 0,100' fill='%23ef7117'/%3E%3C/svg%3E");
-  }
+  .hero__cut--side { display: none; }
+  .hero__cut--bottom { display: block; left: 0; right: 0; bottom: -1px; width: 100%; height: 12%; }
   .hero__text { padding: 28px var(--gutter) 56px; }
 }
 

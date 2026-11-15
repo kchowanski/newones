@@ -1,0 +1,9 @@
+# Ustawienia lokalne edytorów i narzędzi
+.claude/
+.vscode/
+.idea/
+
+# Pliki systemowe
+Thumbs.db
+desktop.ini
+.DS_Store

@@ -53,10 +53,26 @@
   box.querySelector(".lightbox__close").addEventListener("click", function () { box.close(); });
   box.querySelector(".lightbox__prev").addEventListener("click", function () { show(index - 1); });
   box.querySelector(".lightbox__next").addEventListener("click", function () { show(index + 1); });
-  box.addEventListener("click", function (e) { if (e.target === box) box.close(); });
+  // klik w tło (poza zdjęciem) zamyka podgląd
+  var stage = box.querySelector(".lightbox__stage");
+  box.addEventListener("click", function (e) { if (e.target === box || e.target === stage) box.close(); });
   document.addEventListener("keydown", function (e) {
     if (!box.open) return;
     if (e.key === "ArrowLeft") show(index - 1);
     if (e.key === "ArrowRight") show(index + 1);
+  });
+
+  // przesuwanie palcem na telefonie
+  var startX = null, startY = null;
+  stage.addEventListener("touchstart", function (e) {
+    startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
+  }, { passive: true });
+  stage.addEventListener("touchend", function (e) {
+    if (startX === null) return;
+    var dx = e.changedTouches[0].clientX - startX;
+    var dy = e.changedTouches[0].clientY - startY;
+    startX = null;
+    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) show(index + (dx < 0 ? 1 : -1));
   });
 })();

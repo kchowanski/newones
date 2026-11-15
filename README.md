@@ -13,6 +13,10 @@ Statyczna strona (HTML + CSS + odrobina JS), bez części serwerowej. Hosting: G
 Wrzuć zdjęcie do `assets/img/` (najlepiej `.webp` lub `.jpg`, szerokość ok. 1600–2000 px, do ~300 KB)
 i zamień `src="assets/img/placeholder.svg"` na ścieżkę do pliku. Miejsca oznaczone są komentarzami `PODMIEŃ`.
 
+## Zmiany w CSS/JS
+Linki do `style.css` i `main.js` mają numer wersji (`?v=2`). Po zmianie tych plików podbij numer
+we wszystkich plikach `.html`, żeby przeglądarki odwiedzających pobrały nową wersję zamiast starej z pamięci.
+
 ## Podgląd lokalny
 ```
 python -m http.server 8080

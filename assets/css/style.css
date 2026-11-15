@@ -239,21 +239,37 @@ p { margin: 0 0 1em; }
 .hero h1 { margin-bottom: .4em; }
 .hero h1 .accent { display: block; }
 .hero__text .lead { margin-bottom: 2rem; }
-.hero__media { position: relative; overflow: hidden; }
-.hero__media img { width: 100%; height: 100%; object-fit: cover; }
-.hero__media::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(90deg, var(--bg) 0%, transparent 18%);
-  z-index: 1;
+/* Ostre, ukośne cięcie zdjęcia z pomarańczową krawędzią (nawiązanie do dachu z logo).
+   Pomarańczowe tło prześwituje pasem o szerokości --edge między cięciem kontenera a cięciem zdjęcia. */
+.hero__media {
+  --cut: 14%;
+  --edge: 6px;
+  position: relative;
+  overflow: hidden;
+  background: var(--orange);
+  clip-path: polygon(var(--cut) 0, 100% 0, 100% 100%, 0 100%);
+}
+.hero__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  clip-path: polygon(calc(var(--cut) + var(--edge)) 0, 100% 0, 100% 100%, var(--edge) 100%);
 }
 
 @media (max-width: 900px) {
   .hero { grid-template-columns: 1fr; min-height: 0; max-height: none; }
-  .hero__media { order: -1; aspect-ratio: 16 / 10; }
-  .hero__media::before { background: linear-gradient(0deg, var(--bg) 0%, transparent 35%); }
-  .hero__text { padding: 8px var(--gutter) 56px; }
+  .hero__media {
+    order: -1;
+    aspect-ratio: 16 / 10;
+    --cut: 12%;
+    --edge: 5px;
+    /* na telefonie skos idzie po dolnej krawędzi */
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - var(--cut)), 0 100%);
+  }
+  .hero__media img {
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - var(--cut) - var(--edge)), 0 calc(100% - var(--edge)));
+  }
+  .hero__text { padding: 28px var(--gutter) 56px; }
 }
 
 /* ---------- Page hero (podstrony) ---------- */

@@ -198,20 +198,46 @@ p { margin: 0 0 1em; }
 @media (max-width: 900px) {
   .nav-toggle { display: block; }
   .header-cta { display: none; }
+  /* Panel menu pojawia się pod nagłówkiem (nie przejeżdża przez logo):
+     delikatne pojawienie + przesunięcie o kilka px, pozycje wjeżdżają po kolei. */
   .nav {
     position: fixed;
-    inset: var(--header-h) 0 auto 0;
+    top: var(--header-h);
+    left: 0;
+    right: 0;
+    height: calc(100vh - var(--header-h));
+    height: calc(100dvh - var(--header-h));
+    overflow-y: auto;
     background: var(--bg);
-    border-bottom: 1px solid var(--line);
-    transform: translateY(-120%);
-    transition: transform .3s ease;
-    z-index: -1;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-8px);
+    transition: opacity .25s ease, transform .25s ease, visibility 0s linear .25s;
   }
-  .nav-open .nav { transform: translateY(0); }
+  .nav-open .nav {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    transition: opacity .25s ease, transform .25s ease, visibility 0s;
+  }
   .nav ul { flex-direction: column; gap: 0; padding: 8px var(--gutter) 24px; }
-  .nav a { display: block; padding: 14px 0; font-size: .9rem; border-bottom: 1px solid var(--line); }
+  .nav li {
+    opacity: 0;
+    transform: translateY(-6px);
+    transition: opacity .3s ease, transform .3s ease;
+  }
+  .nav-open .nav li { opacity: 1; transform: none; }
+  .nav-open .nav li:nth-child(2) { transition-delay: .03s; }
+  .nav-open .nav li:nth-child(3) { transition-delay: .06s; }
+  .nav-open .nav li:nth-child(4) { transition-delay: .09s; }
+  .nav-open .nav li:nth-child(5) { transition-delay: .12s; }
+  .nav-open .nav li:nth-child(6) { transition-delay: .15s; }
+  .nav a { display: block; padding: 16px 0; font-size: .9rem; border-bottom: 1px solid var(--line); }
   .nav a[aria-current="page"]::after { display: none; }
   .nav a[aria-current="page"] { color: var(--orange); }
+  /* gdy menu otwarte: nagłówek nieprzezroczysty, strona pod spodem się nie przewija */
+  .nav-open .site-header { background: var(--bg); }
+  body.nav-open { overflow: hidden; }
 }
 
 /* ---------- Hero (home) ---------- */
